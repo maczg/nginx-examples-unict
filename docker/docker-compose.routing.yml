@@ -42,7 +42,7 @@ services:
     <<: *common-settings
     hostname: orders_ms
     container_name: orders_ms
-    image: products_ms
+    image: orders_ms
     build:
       context: ../whoami
       dockerfile: Dockerfile
