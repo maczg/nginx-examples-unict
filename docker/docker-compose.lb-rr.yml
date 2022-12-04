@@ -1,0 +1,49 @@
+x-common-settings: &common-settings
+  restart: always
+  networks:
+    api-net:
+
+services:
+  apigw:
+    <<: *common-settings
+    image: nginx-base
+    build:
+      context: ../nginx
+      dockerfile: nginx.base.Dockerfile
+    container_name: apigw
+    ports:
+      - "8080:80"
+    depends_on:
+      - users_ms
+      - orders_ms
+      - products_ms
+    volumes:
+      - ../nginx/configs/lb-rr.conf:/etc/nginx/conf.d/lb-rr.conf
+
+  users_ms:
+    <<: *common-settings
+    image: users_ms
+    build:
+      context: ../whoami
+      dockerfile: Dockerfile
+    scale: 3
+
+  products_ms:
+    <<: *common-settings
+    image: products_ms
+    build:
+      context: ../whoami
+      dockerfile: Dockerfile
+    scale: 3
+
+  orders_ms:
+    <<: *common-settings
+    image: orders_ms
+    build:
+      context: ../whoami
+      dockerfile: Dockerfile
+    scale: 3
+
+networks:
+  api-net:
+    name: api-net
