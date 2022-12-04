@@ -1,0 +1,49 @@
+x-common-settings: &common-settings
+  restart: always
+  networks:
+    api-net:
+
+services:
+  apigw:
+    <<: *common-settings
+    image: nginx-open-basic-auth
+    build:
+      context: ../nginx
+      dockerfile: nginx.basicauth.Dockerfile
+    container_name: apigw
+    ports:
+      - 8080:80
+    depends_on:
+      - whoami_1
+      - whoami_2
+      - whoami_3
+    volumes:
+      - ../nginx/configs/basic-auth.conf:/etc/nginx/conf.d/basic-auth.conf
+
+  whoami_1:
+    <<: *common-settings
+    hostname: whoami_1
+    container_name: whoami_1
+    build:
+      context: ../whoami
+      dockerfile: Dockerfile
+
+  whoami_2:
+    <<: *common-settings
+    hostname: whoami_2
+    container_name: whoami_2
+    build:
+      context: ../whoami
+      dockerfile: Dockerfile
+
+  whoami_3:
+    <<: *common-settings
+    hostname: whoami_3
+    container_name: whoami_3
+    build:
+      context: ../whoami
+      dockerfile: Dockerfile
+
+networks:
+  api-net:
+    name: api-net
