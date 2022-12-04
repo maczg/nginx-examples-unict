@@ -1,0 +1,52 @@
+x-common-settings: &common-settings
+  restart: always
+  networks:
+    api-net:
+
+services:
+  apigw:
+    <<: *common-settings
+    image: nginx-base
+    build:
+      context: ../nginx
+      dockerfile: nginx.base.Dockerfile
+    container_name: apigw
+    ports:
+      - 8080:80
+    depends_on:
+      - users_ms
+      - orders_ms
+      - products_ms
+    volumes:
+      - ../nginx/configs/rate-limit.conf:/etc/nginx/conf.d/rate-limit.conf
+
+  users_ms:
+    <<: *common-settings
+    hostname: users_ms
+    container_name: users_ms
+    image: users_ms
+    build:
+      context: ../whoami
+      dockerfile: Dockerfile
+
+  products_ms:
+    <<: *common-settings
+    hostname: products_ms
+    container_name: products_ms
+    image: products_ms
+    build:
+      context: ../whoami
+      dockerfile: Dockerfile
+
+  orders_ms:
+    <<: *common-settings
+    hostname: orders_ms
+    container_name: orders_ms
+    image: products_ms
+    build:
+      context: ../whoami
+      dockerfile: Dockerfile
+
+networks:
+  api-net:
+    name: api-net
