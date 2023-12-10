@@ -6,7 +6,7 @@ x-common-settings: &common-settings
 services:
   apigw:
     <<: *common-settings
-    image: nginx-with-ssl
+    image: local-nginx:ssl
     build:
       context: ../nginx
       dockerfile: nginx.ssl.Dockerfile

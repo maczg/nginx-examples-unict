@@ -6,7 +6,7 @@ x-common-settings: &common-settings
 services:
   apigw:
     <<: *common-settings
-    image: nginx-base
+    image: local-nginx:base
     build:
       context: ../nginx
       dockerfile: nginx.base.Dockerfile

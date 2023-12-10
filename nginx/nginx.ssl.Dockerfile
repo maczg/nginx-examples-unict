@@ -1,5 +1,5 @@
 ARG HOSTNAME=api.ecomm.com
-FROM nginx
+FROM nginx:1.24-bullseye
 ARG HOSTNAME
 RUN apt-get update \
     && apt-get install -y nginx-extras apache2-utils vim openssl \
